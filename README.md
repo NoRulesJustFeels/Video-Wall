@@ -7,7 +7,7 @@ Video-Wall
 <p>Features:
 <ul>
 <li>Grid of animated YouTube videos</li>
-<li>Select HD playlist videos</li>
+<li>Select playlist of HD videos</li>
 <li>Configure animated effects</li>
 <li>Play current video in YouTube app</li>
 </ul>
