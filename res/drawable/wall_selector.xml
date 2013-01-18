@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:background="@color/black" android:drawable="@drawable/wall_item_over" android:state_window_focused="false"/>
+    <item android:background="@color/black" android:drawable="@drawable/wall_item_down" android:state_pressed="true"/>
+    <item android:background="@color/black" android:drawable="@drawable/wall_item_over" android:state_focused="true"/>
+    <item android:background="@color/black" android:drawable="@drawable/wall_item_up" android:state_focused="false"/>
+    <item android:drawable="@android:color/transparent"/>
+
+</selector>

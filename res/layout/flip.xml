@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+    
+    <ViewFlipper
+		android:id="@+id/viewFlipper" 
+		android:layout_width="match_parent"
+		android:layout_height="match_parent" 
+    	android:gravity="center"
+		android:layout_gravity="center"
+		android:addStatesFromChildren="true"
+		android:layout_centerInParent="true"> 
+    
+		<ImageView  
+			android:id="@+id/imageView1" 			
+			android:src="@drawable/empty"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent" 
+			android:scaleType="centerCrop"
+			android:layout_gravity="center"
+	    	android:gravity="center"
+    		android:clickable="true"
+			android:layout_centerInParent="true" />
+		
+		<ImageView  
+			android:id="@+id/imageView2" 
+			android:src="@drawable/empty"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent" 
+			android:scaleType="centerCrop"
+			android:layout_gravity="center"
+	    	android:gravity="center"
+    		android:clickable="true"
+			android:layout_centerInParent="true" /> 
+		
+	</ViewFlipper>
+    
+
+</LinearLayout>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<playlists>
+
+    <playlist
+        id="PLLCXrEIzG_9HEdpBqLjQn67JTwMcEbOwZ"
+        name="Beaches" />
+    <playlist
+        id="PLLCXrEIzG_9E2O7inaZiWS4ltM4KYKG40"
+        name="Surfing" />
+    <playlist
+        id="PLLCXrEIzG_9HBH1nuRXbXCivyn-FkkD59"
+        name="Nature" />
+    <playlist
+        id="PLLCXrEIzG_9HDwmaYeziIVepsyYuRDArk"
+        name="Animusic" />
+    <playlist
+        id="PLLCXrEIzG_9H8QMNLK8znC89d1lL-Il6D"
+        name="Go Pro HD" />
+    <playlist
+        id="PLLCXrEIzG_9GQI5jSZZBwYuz_T6Js2noj"
+        name="Sunrise and Sunset" />
+    <playlist
+        id="PLLCXrEIzG_9Hqa-iHBK3rzsE-cE2cWNUX"
+        name="Africa" />
+    <playlist
+        id="PLLCXrEIzG_9GQyxRTjBC1AjX1nqc5Wlmg"
+        name="HD Demos" />
+
+</playlists>

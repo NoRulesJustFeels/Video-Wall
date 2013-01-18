@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/preferences_category_general" >
+        <ListPreference
+            android:defaultValue="flip"
+            android:entries="@array/dimEffectArray"
+            android:entryValues="@array/dimEffectValues"
+            android:key="general.effect"
+            android:summary="@string/preferences_general_effect_summary"
+            android:title="@string/preferences_general_effect_title" />
+        <ListPreference
+            android:defaultValue="thin"
+            android:entries="@array/dimBorderArray"
+            android:entryValues="@array/dimBorderValues"
+            android:key="general.border"
+            android:summary="@string/preferences_general_border_summary"
+            android:title="@string/preferences_general_border_title" />
+        <ListPreference
+            android:defaultValue="4"
+            android:entries="@array/dimRowsArray"
+            android:entryValues="@array/dimRowsValues"
+            android:key="general.rows"
+            android:summary="@string/preferences_general_rows_summary"
+            android:title="@string/preferences_general_rows_title" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

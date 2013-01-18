@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="dimEffectArray">
+   <item>@string/preferences_general_effect_flip</item>
+   <item>@string/preferences_general_effect_fade</item>
+   <item>@string/preferences_general_effect_right_left</item>
+   <item>@string/preferences_general_effect_top_down</item>
+</string-array>
+ 
+<string-array name="dimEffectValues">
+   <item>flip</item>
+   <item>fade</item>
+   <item>right/left</item>
+   <item>top/down</item>
+</string-array>
+
+<string-array name="dimBorderArray">
+   <item>@string/preferences_general_border_none</item>
+   <item>@string/preferences_general_border_thin</item>
+   <item>@string/preferences_general_border_thick</item>
+</string-array>
+ 
+<string-array name="dimBorderValues">
+   <item>none</item>
+   <item>thin</item>
+   <item>thick</item>
+</string-array>
+
+<string-array name="dimRowsArray">
+   <item>@string/preferences_general_rows_two</item>
+   <item>@string/preferences_general_rows_three</item>
+   <item>@string/preferences_general_rows_four</item>
+</string-array>
+ 
+<string-array name="dimRowsValues">
+   <item>2</item>
+   <item>3</item>
+   <item>4</item>
+</string-array>
+
+</resources>
