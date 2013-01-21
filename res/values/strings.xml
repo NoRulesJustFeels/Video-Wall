@@ -48,7 +48,7 @@
     
     <!-- Rating -->
     <string name="rating_title">Rate Video Wall</string>
-    <string name="rating_message">If you enjoy using Open Launcher, please take a moment to rate it. Thanks for your support!</string>
+    <string name="rating_message">If you enjoy using Video Wall, please take a moment to rate it. Thanks for your support!</string>
     <string name="rating_ok">Rate App</string>
     <string name="rating_remind">Remind me later</string>
     <string name="rating_no">No, thanks</string>
@@ -76,6 +76,9 @@
     <string name="preferences_general_rows_two">2</string>
     <string name="preferences_general_rows_three">3</string>
     <string name="preferences_general_rows_four">4</string>
+    <string name="preferences_general_highlight_title">Video Highlight</string>
+    <string name="preferences_general_highlight_summary_checked">Display video highlight</string>
+    <string name="preferences_general_highlight_summary_unchecked">Don\&apos;t display video highlight</string>
     
     <!-- YouTube -->
     <string name="terms_html">&lt;p>This application plays YouTube videos.&lt;/p> &lt;p>By using this application, you have agreed to the following Terms of Use and Copyright Notes:&lt;br/>&lt;a href=http://www.youtube.com/t/terms>YouTube Terms of Service&lt;/a>&lt;br/>&lt;a href=http://www.youtube.com/t/privacy>YouTube Privacy Policy&lt;/a>&lt;br/>&lt;a href=http://www.youtube.com/t/copyright_center>YouTube Copyright&lt;/a></string>

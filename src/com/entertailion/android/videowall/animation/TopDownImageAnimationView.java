@@ -27,7 +27,7 @@ import android.view.animation.TranslateAnimation;
  */
 public class TopDownImageAnimationView extends ImageAnimationView {
 
-	private static final String LOG_TAG = "RightLeftImageAnimationView";
+	private static final String LOG_TAG = "TopDownImageAnimationView";
 
 	/**
 	 * Create a view which performs an animation from one view to another.

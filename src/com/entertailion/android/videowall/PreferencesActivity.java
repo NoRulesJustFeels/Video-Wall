@@ -33,6 +33,7 @@ public class PreferencesActivity extends PreferenceActivity {
 	public static final String GENERAL_EFFECT = "general.effect";
 	public static final String GENERAL_BORDER = "general.border";
 	public static final String GENERAL_ROWS = "general.rows";
+	public static final String GENERAL_HIGHLIGHT = "general.highlight";
 
 	public static final String EFFECT_FLIP = "flip";
 	public static final String EFFECT_FADE = "fade";
@@ -136,6 +137,26 @@ public class PreferencesActivity extends PreferenceActivity {
 				} else if (newValue.equals(ROWS_FOUR)) {
 					preference.setSummary(getString(R.string.preferences_general_rows_four));
 					Analytics.logEvent(Analytics.ROWS_FOUR);
+				}
+				return true;
+			}
+
+		});
+
+		preference = (Preference) findPreference(GENERAL_HIGHLIGHT);
+		preference
+				.setSummary(preference.getSharedPreferences().getBoolean(GENERAL_HIGHLIGHT, true) ? getString(R.string.preferences_general_highlight_summary_checked)
+						: getString(R.string.preferences_general_highlight_summary_unchecked));
+		preference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object newValue) {
+				if (newValue.equals(Boolean.TRUE)) {
+					preference.setSummary(getString(R.string.preferences_general_highlight_summary_checked));
+					Analytics.logEvent(Analytics.HIGHLIGHT_ON);
+				} else {
+					preference.setSummary(getString(R.string.preferences_general_highlight_summary_unchecked));
+					Analytics.logEvent(Analytics.HIGHLIGHT_OFF);
 				}
 				return true;
 			}

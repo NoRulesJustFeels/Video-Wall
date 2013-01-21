@@ -35,6 +35,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
@@ -130,8 +131,8 @@ public class VideoWallActivity extends Activity implements ImageAnimationListene
 		UNINITIALIZED, LOADING_THUMBNAILS, VIDEO_FLIPPED_OUT, VIDEO_LOADING, VIDEO_CUED, VIDEO_PLAYING, VIDEO_ENDED, VIDEO_BEING_FLIPPED_OUT,
 	}
 
-	private Animation fadeOut, fadeIn;
-	private ImageView menuImageView, coverImageView, youtubeImageView;
+	private Animation fadeOut, fadeIn, fadeInSlow, fadeOutSlow;
+	private ImageView menuImageView, coverImageView, youtubeImageView, highlightImageView;
 	private View overlayView;
 	private SharedPreferences preferences;
 	private ViewGroup viewFrame;
@@ -140,6 +141,7 @@ public class VideoWallActivity extends Activity implements ImageAnimationListene
 	private String currentVideoId;
 	private int interImagePaddingPx;
 	private String currentPlaylist = PLAYLIST_ID;
+	private String nextPlaylist = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -154,6 +156,8 @@ public class VideoWallActivity extends Activity implements ImageAnimationListene
 
 		fadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
 		fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+		fadeOutSlow = AnimationUtils.loadAnimation(this, R.anim.fade_out_slow);
+		fadeInSlow = AnimationUtils.loadAnimation(this, R.anim.fade_in_slow);
 
 		SharedPreferences settings = getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
 		currentPlaylist = settings.getString(PLAYLIST, PLAYLIST_ID);
@@ -203,7 +207,7 @@ public class VideoWallActivity extends Activity implements ImageAnimationListene
 	@Override
 	public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasResumed) {
 		Log.d(LOG_TAG, "onInitializationSuccess");
-		VideoWallActivity.this.player = player;
+		this.player = player;
 		player.setPlayerStyle(PlayerStyle.CHROMELESS);
 		player.setPlayerStateChangeListener(new VideoListener());
 		player.setFullscreenControlFlags(YouTubePlayer.FULLSCREEN_FLAG_CUSTOM_LAYOUT);
@@ -256,9 +260,17 @@ public class VideoWallActivity extends Activity implements ImageAnimationListene
 	}
 
 	public void createUserInterface() {
+		activityResumed = false;
+		if (highlightImageView != null) {
+			viewFrame.removeView(highlightImageView);
+		}
+		if (player != null && player.isPlaying()) {
+			player.pause();
+		}
 		if (flipDelayHandler != null) {
 			flipDelayHandler.removeCallbacksAndMessages(null);
 		}
+		currentVideoId = null;
 
 		preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		int padding = INTER_IMAGE_PADDING_DP;
@@ -287,9 +299,17 @@ public class VideoWallActivity extends Activity implements ImageAnimationListene
 		imageHeight = (displayMetrics.heightPixels / numberOfRows) - interImagePaddingPx;
 		imageWidth = (int) (imageHeight * THUMBNAIL_ASPECT_RATIO);
 
+		// create view to highlight the currently playing video
+		highlightImageView = new ImageView(this);
+		highlightImageView.setVisibility(View.INVISIBLE);
+		highlightImageView.setLayoutParams(new LayoutParams(imageWidth + interImagePaddingPx, imageHeight + interImagePaddingPx));
+		highlightImageView.setBackgroundColor(getResources().getColor(R.color.highlight));
+		viewFrame.addView(highlightImageView);
+
 		if (imageWallView != null) {
 			viewFrame.removeView(imageWallView);
 		}
+		// create the wall of playlist thumbnail images
 		imageWallView = new ImageWallView(this, imageWidth, imageHeight, interImagePaddingPx);
 		viewFrame.addView(imageWallView, MATCH_PARENT, MATCH_PARENT);
 
@@ -297,6 +317,9 @@ public class VideoWallActivity extends Activity implements ImageAnimationListene
 			thumbnailLoader.setOnThumbnailLoadedListener(null);
 			thumbnailLoader.release();
 			thumbnailLoader = null;
+		}
+		if (nextPlaylist != null) {
+			currentPlaylist = nextPlaylist;
 		}
 		thumbnailView = new YouTubeThumbnailView(this);
 		thumbnailView.initialize(DEVELOPER_KEY, this);
@@ -400,6 +423,10 @@ public class VideoWallActivity extends Activity implements ImageAnimationListene
 		}
 		flipDelayHandler.removeCallbacksAndMessages(null);
 		activityResumed = false;
+		highlightImageView.setVisibility(View.INVISIBLE);
+		highlightImageView.setX(-imageWidth);
+		highlightImageView.setY(-imageHeight);
+		
 		super.onPause();
 	}
 
@@ -455,7 +482,13 @@ public class VideoWallActivity extends Activity implements ImageAnimationListene
 				videoRow = flippingRow;
 				playerView.setX(imageWallView.getXPosition(flippingCol, flippingRow));
 				playerView.setY(imageWallView.getYPosition(flippingCol, flippingRow));
-				imageWallView.hideImage(flippingCol, flippingRow);
+				ImageView currentImageView = imageWallView.hideImage(flippingCol, flippingRow);
+				if (preferences.getBoolean(PreferencesActivity.GENERAL_HIGHLIGHT, true)) {
+					highlightImageView.setVisibility(View.VISIBLE);
+					highlightImageView.setX(currentImageView.getX() - interImagePaddingPx / 2);
+					highlightImageView.setY(currentImageView.getY() - interImagePaddingPx / 2);
+					highlightImageView.startAnimation(fadeInSlow);
+				}
 				playerView.setVisibility(View.VISIBLE);
 				Log.d(LOG_TAG, "player.play: " + currentVideoId);
 				player.play();
@@ -540,6 +573,9 @@ public class VideoWallActivity extends Activity implements ImageAnimationListene
 
 		@Override
 		public void onVideoEnded() {
+			if (highlightImageView.getVisibility()==View.VISIBLE) {
+				highlightImageView.startAnimation(fadeOutSlow);
+			}
 			currentVideoId = null;
 			state = State.VIDEO_ENDED;
 			imageWallView.showImage(videoCol, videoRow);
@@ -552,6 +588,9 @@ public class VideoWallActivity extends Activity implements ImageAnimationListene
 		@Override
 		public void onError(YouTubePlayer.ErrorReason errorReason) {
 			Log.e(LOG_TAG, "player error: " + errorReason);
+			if (highlightImageView.getVisibility()==View.VISIBLE) {
+				highlightImageView.startAnimation(fadeOutSlow);
+			}
 			currentVideoId = null;
 			if (errorReason == YouTubePlayer.ErrorReason.UNEXPECTED_SERVICE_DISCONNECTION) {
 				// player has encountered an unrecoverable error - stop the demo
@@ -643,8 +682,35 @@ public class VideoWallActivity extends Activity implements ImageAnimationListene
 		case KeyEvent.KEYCODE_DPAD_CENTER:
 		case KeyEvent.KEYCODE_ENTER: {
 			if (currentVideoId != null && YouTubeIntents.isYouTubeInstalled(this) && YouTubeIntents.canResolvePlayVideoIntent(this)) {
+				// open current video in YouTube app
 				Intent intent = YouTubeIntents.createPlayVideoIntentWithOptions(this, currentVideoId, true, true);
 				startActivity(intent);
+			}
+			return true;
+		}
+		case KeyEvent.KEYCODE_MEDIA_STOP:
+		case KeyEvent.KEYCODE_MEDIA_NEXT: {
+			if (state.equals(State.VIDEO_PLAYING)) {
+				if (player != null && player.isPlaying()) {
+					// end the current playing video
+					player.seekToMillis(player.getDurationMillis());
+				}
+			}
+			return true;
+		}
+		case KeyEvent.KEYCODE_MEDIA_PAUSE: {
+			if (state.equals(State.VIDEO_PLAYING)) {
+				if (player != null && player.isPlaying()) {
+					player.pause();
+				}
+			}
+			return true;
+		}
+		case KeyEvent.KEYCODE_MEDIA_PLAY: {
+			if (state.equals(State.VIDEO_PLAYING)) {
+				if (player != null && !player.isPlaying()) {
+					player.play();
+				}
 			}
 			return true;
 		}
@@ -659,20 +725,7 @@ public class VideoWallActivity extends Activity implements ImageAnimationListene
 	}
 
 	public void setPlaylist(String playlist) {
-		activityResumed = false;
-		if (player != null) {
-			player.pause();
-		}
-		if (flipDelayHandler != null) {
-			flipDelayHandler.removeCallbacksAndMessages(null);
-		}
-		if (thumbnailLoader != null) {
-			thumbnailLoader.setOnThumbnailLoadedListener(null);
-			thumbnailLoader.release();
-			thumbnailLoader = null;
-		}
-		currentVideoId = null;
-		currentPlaylist = playlist;
+		nextPlaylist = playlist;
 
 		// persist playlist selection
 		try {
@@ -684,7 +737,7 @@ public class VideoWallActivity extends Activity implements ImageAnimationListene
 			Log.d(LOG_TAG, "setPlaylist", e);
 		}
 
-		Log.d(LOG_TAG, "currentPlaylist=" + currentPlaylist);
+		Log.d(LOG_TAG, "nextPlaylist=" + nextPlaylist);
 		createUserInterface();
 	}
 

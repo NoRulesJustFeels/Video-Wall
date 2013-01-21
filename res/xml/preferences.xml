@@ -23,6 +23,12 @@
             android:key="general.rows"
             android:summary="@string/preferences_general_rows_summary"
             android:title="@string/preferences_general_rows_title" />
+        
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="general.highlight"
+            android:summary="@string/preferences_general_highlight_summary_checked"
+            android:title="@string/preferences_general_highlight_title" />
     </PreferenceCategory>
 
 </PreferenceScreen>

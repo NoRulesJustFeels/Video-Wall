@@ -145,8 +145,10 @@ public class ImageWallView extends ViewGroup {
 		return (col * numberOfRows) + row;
 	}
 
-	public void hideImage(int col, int row) {
-		images[getElementIdx(col, row)].setVisibility(View.INVISIBLE);
+	public ImageView hideImage(int col, int row) {
+		ImageView imageView = images[getElementIdx(col, row)];
+		imageView.setVisibility(View.INVISIBLE);
+		return imageView;
 	}
 
 	public void showImage(int col, int row) {

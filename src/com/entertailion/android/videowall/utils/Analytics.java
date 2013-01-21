@@ -57,6 +57,8 @@ public class Analytics {
 	public static final String ROWS_THREE = "rows.three";
 	public static final String ROWS_FOUR = "rows.four";
 	public static final String SELECT_PLAYLIST = "playlist.select";
+	public static final String HIGHLIGHT_ON = "highlight.on";
+	public static final String HIGHLIGHT_OFF = "highlight.off";
 
 	private static Context context;
 

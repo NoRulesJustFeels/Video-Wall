@@ -18,6 +18,7 @@ Video-Wall
 <li>To select a playlist: Press the Menu button and then "Select Playlist".</li>
 <li>To change the animated effect: Press the Menu button, select "Settings/Effect".</li>
 <li>To play the current video in the YouTube app: Press the OK button. Press Back to get back to the video wall app.</li>
+<li>To jump to the next video: Press the media next button.</li>
 </ul>
 </p>
 
